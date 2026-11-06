@@ -54,10 +54,34 @@ function Skills({ skills }: SkillsProps) {
     );
 }
 
+interface User{
+  name: string;
+  age: number;
+  email: string
+}
 
 function App() {
+  const [user, setUser] = useState<User>({
+    name:"kal",
+    age:20,
+    email: "kaleabsintayehu@gmail.com"
 
-  const [count, setCount] = useState(0);
+  })
+//   setUser({
+//     name: "John",
+//     age: 25,
+//     email: "john@example.com"
+// });
+
+// setUser({
+//     ...user,
+//     name: "John"
+// });// the spread operator preserves th other properties
+
+  // const [count, setCount] = useState(0);
+  const [count, setCount] = useState<number>(0);
+  //the state must contain a number -> generic type parameter(but typescript automatically understands that count is number but some times explicit types are necessary)
+  // const [status, setStatus] = useState<"loading" | "success" | "error">("loading"); => typescript only allows those three values only
   const mySkills: string[] = [
         "HTML",
         "CSS",
