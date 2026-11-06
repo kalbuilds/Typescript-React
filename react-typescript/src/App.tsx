@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './App.css'
 
 interface WelcomeProps{
@@ -15,6 +16,7 @@ interface DeveloperProps{
   age:number;
 
 }
+
 
 function DeveloperProfile({name,role,age}: DeveloperProps){
   return(
@@ -52,7 +54,10 @@ function Skills({ skills }: SkillsProps) {
     );
 }
 
+
 function App() {
+
+  const [count, setCount] = useState(0);
   const mySkills: string[] = [
         "HTML",
         "CSS",
@@ -63,6 +68,8 @@ function App() {
 
     return (
         <div>
+          <h1>{count}</h1>
+          <button onClick={()=> setCount(count + 1)}>Increase</button>
             <Welcome name="kaleab" age={20} />
              <Welcome name="yoda" />
              <Skills skills={mySkills} />
