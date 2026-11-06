@@ -1,12 +1,74 @@
 import './App.css'
 
-function App() {
+interface WelcomeProps{
+  name:string;
+  age: number;
+}
 
-  return (
-   <>
-   Typescript - react
-   </>
+interface SkillsProps {
+  skills: string[];
+} 
+
+interface DeveloperProps{
+  name: string;
+  role: string;
+  age:number;
+
+}
+
+function DeveloperProfile({name,role,age}: DeveloperProps){
+  return(
+    <div>
+      <p>{name}</p>
+      <p>{age}</p>
+      <p>{role}</p>
+    </div>
   )
 }
 
-export default App
+// / the data type comes from the object welcome props
+function Welcome({name, age}: WelcomeProps){
+  return(
+   <div>
+    <h1>Hello {name}</h1>
+    {age !== undefined && <p> Age: {age}</p>}
+   </div>
+
+  )
+}
+
+
+function Skills({ skills }: SkillsProps) {
+    return (
+        <div>
+            <h2>My Skills</h2>
+
+            <ul>
+                {skills.map((skill, index) => (
+                    <li key={index}>{skill}</li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+function App() {
+  const mySkills: string[] = [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "React",
+        "TypeScript"
+    ];
+
+    return (
+        <div>
+            <Welcome name="kaleab" age={20} />
+             <Welcome name="yoda" />
+             <Skills skills={mySkills} />
+             <DeveloperProfile name="Kaleab"  role="Developer" age={20} />
+        </div>
+    );
+}
+
+export default App;
