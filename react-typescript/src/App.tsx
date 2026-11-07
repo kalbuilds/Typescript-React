@@ -3,7 +3,7 @@ import './App.css'
 
 interface WelcomeProps{
   name:string;
-  age: number;
+  age?: number;
 }
 
 interface SkillsProps {
@@ -60,6 +60,41 @@ interface User{
   email: string
 }
 
+function Counterapp(){
+  const [isVisible, setIsVisible] = useState<boolean>(true);
+     const [count, setCount] = useState(0);
+
+    //  function Notbelowzero(){
+    //   if(count > 0 ){
+
+    //     setCount(count - 1)
+
+    //   }
+     
+    //  }
+
+     function decreaseCount() {
+  setCount(previousCount =>
+    previousCount > 0 ? previousCount - 1 : 0
+  );
+}
+    return(
+       <>
+       { isVisible &&  <> {count}
+       <button onClick={()=> setCount(count + 1)}> Increase</button>
+
+       <button onClick={ decreaseCount }> Decrease</button>
+       <button onClick={()=> setCount(0)}> Reset</button> </>}
+      
+
+       <button onClick={()=> setIsVisible(!isVisible)}>  { isVisible ? "Hide counter " : "open counter " }</button>
+     
+
+       </>
+    )
+}
+
+
 function App() {
   const [user, setUser] = useState<User>({
     name:"kal",
@@ -98,6 +133,7 @@ function App() {
              <Welcome name="yoda" />
              <Skills skills={mySkills} />
              <DeveloperProfile name="Kaleab"  role="Developer" age={20} />
+             <Counterapp />
         </div>
     );
 }
