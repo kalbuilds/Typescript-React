@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ChangeEvent } from 'react';
 import './App.css'
 
 interface WelcomeProps{
@@ -94,6 +95,32 @@ function Counterapp(){
     )
 }
 
+function NameInput(){
+    const [name, setName] = useState<string>("");
+
+    // React.ChangeEvent<HTMLInputElemen/>
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>) {
+    setName(event.target.value)
+    
+  }
+
+    return (
+    <div>
+      <input
+        type="text"
+        placeholder="Enter your name"
+        onChange={handleChange}
+      />
+      <br />
+
+      {name.trim() !== "" ? `${name}` : "Please enter your name in the input file of the given place"}
+    </div>
+  );
+
+
+}
+
 
 function App() {
   const [user, setUser] = useState<User>({
@@ -134,6 +161,7 @@ function App() {
              <Skills skills={mySkills} />
              <DeveloperProfile name="Kaleab"  role="Developer" age={20} />
              <Counterapp />
+             <NameInput/>
         </div>
     );
 }
