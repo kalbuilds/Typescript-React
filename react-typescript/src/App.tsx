@@ -106,6 +106,8 @@ function NameInput() {
 
   }
 
+
+
   return (
     <div>
       <input
@@ -123,12 +125,82 @@ function NameInput() {
 
 }
 
+
+
+function RegistrationFormManger() {
+  const [fullName, setFullName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+
+  interface UserForm {
+    id: number;
+    fullName: string;
+    email: string;
+  }
+
+  const [users, setUsers] = useState<UserForm[]>([]);
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const newUser: UserForm = {
+      id: Date.now(),
+      fullName: fullName,
+      email: email
+    };
+    setUsers(previousUsers => [
+      ...previousUsers,
+      newUser
+    ]);
+    console.log(newUser);
+    setFullName("");
+    setEmail("");
+
+  }
+
+  function deleteUser(id: number) {
+    setUsers(previousUsers =>
+      previousUsers.filter(user => user.id !== id)
+    );
+  }
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        {/* <label htmlFor="id">Id</label>
+      <input type="text" placeholder='ID' value={id} onChange={(event) => setId(event.target.value)} />
+      <br /> */}
+        <label htmlFor="name">Name</label>
+        <input type="text" id="name" placeholder='Name' value={fullName} onChange={(event) => setFullName(event.target.value)} />
+        <br />
+        <label htmlFor="email">Email</label>
+        <input type="email" placeholder='email' value={email} onChange={(event) => setEmail(event.target.value)} />
+
+        <button type='submit'>Submit</button>
+
+
+
+      </form>
+
+      {
+        users.map((user) => (
+          <div key={user.id}>
+            <p>{user.fullName}</p>
+            <p>{user.email}</p>
+            <button onClick={() => deleteUser(user.id)}>Delete</button>
+          </div>
+        ))
+      }
+    </>
+
+
+
+  )
+}
+
 function RegistrationForm() {
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
+
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -246,6 +318,8 @@ function App() {
       <Counterapp />
       <NameInput />
       <RegistrationForm />
+      <h1>RegistrationFormManger</h1>
+      <RegistrationFormManger />
     </div>
   );
 }
