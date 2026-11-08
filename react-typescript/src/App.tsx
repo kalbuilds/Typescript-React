@@ -127,13 +127,33 @@ function RegistrationForm() {
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [success, setSuccess] = useState<boolean>(false);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (fullName.trim() === "") {
+      const message = "Please enter your full name.";
+      setError(message);
+      console.log(message);
+      setSuccess(false);
+      return;
+    }
+
+    if (password.length < 8) {
+      const message = "Password must contain at least 8 characters.";
+      setError(message);
+      console.log(message);
+      setSuccess(false);
+      return;
+    }
+
+    setError("");
+    setSuccess(true);
+
     console.log(fullName);
     console.log(email);
-    setIsSubmitted(true);
   }
 
 
@@ -142,13 +162,22 @@ function RegistrationForm() {
     <>
       <form onSubmit={handleSubmit} autoComplete="off">
         <label htmlFor="name">Name</label>
-        <input type="text" placeholder='Name' id='name' autoComplete="off" value={fullName} onChange={(event) => setFullName(event.target.value)} required />
+        <input type="text" placeholder='Name' id='name' autoComplete="off" value={fullName} onChange={(event) => {
+          setFullName(event.target.value);
+          setSuccess(false);
+        }} required />
         <br />
         <label htmlFor="Email">Email</label>
-        <input type="text" id="Email" autoComplete="off" value={email} onChange={(event) => setEmail(event.target.value)} required />
+        <input type="email" id="Email" autoComplete="off" value={email} onChange={(event) => {
+          setEmail(event.target.value);
+          setSuccess(false);
+        }} required />
         <br />
         <label htmlFor="password">Password</label>
-        <input type="password" autoComplete="new-password" placeholder='Password' value={password} onChange={(event) => setPassword(event.target.value)} required />
+        <input type="password" autoComplete="new-password" placeholder='Password' value={password} onChange={(event) => {
+          setPassword(event.target.value);
+          setSuccess(false);
+        }} required />
 
         <br />
 
@@ -156,11 +185,16 @@ function RegistrationForm() {
 
       </form>
 
-      {isSubmitted && (
+      {error && <p>{error}</p>}
+
+      {success && (
         <>
           <p>{fullName}</p>
           <p>{email}</p>
-          <p>{password}</p>
+
+          {/* <p>{password}</p> */}
+
+
         </>
       )}
     </>
