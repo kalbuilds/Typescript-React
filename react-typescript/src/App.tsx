@@ -2,25 +2,25 @@ import { useState } from 'react';
 import { ChangeEvent } from 'react';
 import './App.css'
 
-interface WelcomeProps{
-  name:string;
+interface WelcomeProps {
+  name: string;
   age?: number;
 }
 
 interface SkillsProps {
   skills: string[];
-} 
+}
 
-interface DeveloperProps{
+interface DeveloperProps {
   name: string;
   role: string;
-  age:number;
+  age: number;
 
 }
 
 
-function DeveloperProfile({name,role,age}: DeveloperProps){
-  return(
+function DeveloperProfile({ name, role, age }: DeveloperProps) {
+  return (
     <div>
       <p>{name}</p>
       <p>{age}</p>
@@ -30,86 +30,88 @@ function DeveloperProfile({name,role,age}: DeveloperProps){
 }
 
 // / the data type comes from the object welcome props
-function Welcome({name, age}: WelcomeProps){
-  return(
-   <div>
-    <h1>Hello {name}</h1>
-    {age !== undefined && <p> Age: {age}</p>}
-   </div>
+function Welcome({ name, age }: WelcomeProps) {
+  return (
+    <div>
+      <h1>Hello {name}</h1>
+      {age !== undefined && <p> Age: {age}</p>}
+    </div>
 
   )
 }
 
 
 function Skills({ skills }: SkillsProps) {
-    return (
-        <div>
-            <h2>My Skills</h2>
+  return (
+    <div>
+      <h2>My Skills</h2>
 
-            <ul>
-                {skills.map((skill, index) => (
-                    <li key={index}>{skill}</li>
-                ))}
-            </ul>
-        </div>
-    );
+      <ul>
+        {skills.map((skill, index) => (
+          <li key={index}>{skill}</li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
-interface User{
+interface User {
   name: string;
   age: number;
   email: string
 }
 
-function Counterapp(){
+function Counterapp() {
   const [isVisible, setIsVisible] = useState<boolean>(true);
-     const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0);
 
-    //  function Notbelowzero(){
-    //   if(count > 0 ){
+  //  function Notbelowzero(){
+  //   if(count > 0 ){
 
-    //     setCount(count - 1)
+  //     setCount(count - 1)
 
-    //   }
-     
-    //  }
+  //   }
 
-     function decreaseCount() {
-  setCount(previousCount =>
-    previousCount > 0 ? previousCount - 1 : 0
-  );
+  //  }
+
+  function decreaseCount() {
+    setCount(previousCount =>
+      previousCount > 0 ? previousCount - 1 : 0
+    );
+  }
+  return (
+    <>
+      {isVisible && <> {count}
+        <button onClick={() => setCount(count + 1)}> Increase</button>
+
+        <button onClick={decreaseCount}> Decrease</button>
+        <button onClick={() => setCount(0)}> Reset</button> </>}
+
+
+      <button onClick={() => setIsVisible(!isVisible)}>  {isVisible ? "Hide counter " : "open counter "}</button>
+
+
+    </>
+  )
 }
-    return(
-       <>
-       { isVisible &&  <> {count}
-       <button onClick={()=> setCount(count + 1)}> Increase</button>
 
-       <button onClick={ decreaseCount }> Decrease</button>
-       <button onClick={()=> setCount(0)}> Reset</button> </>}
-      
+function NameInput() {
+  const [name, setName] = useState<string>("");
 
-       <button onClick={()=> setIsVisible(!isVisible)}>  { isVisible ? "Hide counter " : "open counter " }</button>
-     
-
-       </>
-    )
-}
-
-function NameInput(){
-    const [name, setName] = useState<string>("");
-
-    // React.ChangeEvent<HTMLInputElemen/>
+  // React.ChangeEvent<HTMLInputElement/>
+  //HTMLInputElement describe the element generating the event
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setName(event.target.value)
-    
+
   }
 
-    return (
+  return (
     <div>
       <input
         type="text"
         placeholder="Enter your name"
+        value={name}
         onChange={handleChange}
       />
       <br />
@@ -121,49 +123,97 @@ function NameInput(){
 
 }
 
+function RegistrationForm() {
+  const [fullName, setFullName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    console.log(fullName);
+    console.log(email);
+    setIsSubmitted(true);
+  }
+
+
+  return (
+
+    <>
+      <form onSubmit={handleSubmit} autoComplete="off">
+        <label htmlFor="name">Name</label>
+        <input type="text" placeholder='Name' id='name' autoComplete="off" value={fullName} onChange={(event) => setFullName(event.target.value)} required />
+        <br />
+        <label htmlFor="Email">Email</label>
+        <input type="text" id="Email" autoComplete="off" value={email} onChange={(event) => setEmail(event.target.value)} required />
+        <br />
+        <label htmlFor="password">Password</label>
+        <input type="password" autoComplete="new-password" placeholder='Password' value={password} onChange={(event) => setPassword(event.target.value)} required />
+
+        <br />
+
+        <button type="submit">Register</button>
+
+      </form>
+
+      {isSubmitted && (
+        <>
+          <p>{fullName}</p>
+          <p>{email}</p>
+          <p>{password}</p>
+        </>
+      )}
+    </>
+
+
+
+  )
+}
+
 
 function App() {
   const [user, setUser] = useState<User>({
-    name:"kal",
-    age:20,
+    name: "kal",
+    age: 20,
     email: "kaleabsintayehu@gmail.com"
 
   })
-//   setUser({
-//     name: "John",
-//     age: 25,
-//     email: "john@example.com"
-// });
+  //   setUser({
+  //     name: "John",
+  //     age: 25,
+  //     email: "john@example.com"
+  // });
 
-// setUser({
-//     ...user,
-//     name: "John"
-// });// the spread operator preserves th other properties
+  // setUser({
+  //     ...user,
+  //     name: "John"
+  // });// the spread operator preserves th other properties
 
   // const [count, setCount] = useState(0);
   const [count, setCount] = useState<number>(0);
   //the state must contain a number -> generic type parameter(but typescript automatically understands that count is number but some times explicit types are necessary)
   // const [status, setStatus] = useState<"loading" | "success" | "error">("loading"); => typescript only allows those three values only
   const mySkills: string[] = [
-        "HTML",
-        "CSS",
-        "JavaScript",
-        "React",
-        "TypeScript"
-    ];
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "React",
+    "TypeScript"
+  ];
 
-    return (
-        <div>
-          <h1>{count}</h1>
+  return (
+    <div>
+      {/* <h1>{count}</h1>
           <button onClick={()=> setCount(count + 1)}>Increase</button>
             <Welcome name="kaleab" age={20} />
              <Welcome name="yoda" />
              <Skills skills={mySkills} />
-             <DeveloperProfile name="Kaleab"  role="Developer" age={20} />
-             <Counterapp />
-             <NameInput/>
-        </div>
-    );
+             <DeveloperProfile name="Kaleab"  role="Developer" age={20} /> */}
+      <Counterapp />
+      <NameInput />
+      <RegistrationForm />
+    </div>
+  );
 }
 
 export default App;
