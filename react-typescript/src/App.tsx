@@ -128,6 +128,7 @@ function NameInput() {
 
 
 function RegistrationFormManger() {
+  const [editingUserId, setEditingUserId] = useState<number | null>(null);
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
@@ -140,16 +141,31 @@ function RegistrationFormManger() {
   const [users, setUsers] = useState<UserForm[]>([]);
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const newUser: UserForm = {
-      id: Date.now(),
-      fullName: fullName,
-      email: email
-    };
-    setUsers(previousUsers => [
-      ...previousUsers,
-      newUser
-    ]);
-    console.log(newUser);
+    if (editingUserId !== null) {
+      setUsers(previousUsers =>
+        previousUsers.map(user =>
+          user.id === editingUserId
+            ? { ...user, fullName, email }
+            : user
+        )
+      );
+
+      setEditingUserId(null);
+    }
+
+    else {
+      const newUser: UserForm = {
+        id: Date.now(),
+        fullName: fullName,
+        email: email
+      };
+      setUsers(previousUsers => [
+        ...previousUsers,
+        newUser
+      ]);
+
+    }
+
     setFullName("");
     setEmail("");
 
@@ -160,6 +176,12 @@ function RegistrationFormManger() {
       previousUsers.filter(user => user.id !== id)
     );
   }
+
+  function editUser(user: UserForm) {
+    setFullName(user.fullName);
+    setEmail(user.email);
+    setEditingUserId(user.id);
+  }
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -167,12 +189,16 @@ function RegistrationFormManger() {
       <input type="text" placeholder='ID' value={id} onChange={(event) => setId(event.target.value)} />
       <br /> */}
         <label htmlFor="name">Name</label>
-        <input type="text" id="name" placeholder='Name' value={fullName} onChange={(event) => setFullName(event.target.value)} />
+        <input type="text" id="name" placeholder='Name' value={fullName} onChange={(event) => setFullName(event.target.value)} required />
         <br />
         <label htmlFor="email">Email</label>
-        <input type="email" placeholder='email' value={email} onChange={(event) => setEmail(event.target.value)} />
+        <input type="email" placeholder='email' value={email} onChange={(event) => setEmail(event.target.value)} required />
+        <br />
+        <br />
 
-        <button type='submit'>Submit</button>
+        <button type="submit">
+          {editingUserId !== null ? "Update User" : "Register"}
+        </button>
 
 
 
@@ -183,7 +209,10 @@ function RegistrationFormManger() {
           <div key={user.id}>
             <p>{user.fullName}</p>
             <p>{user.email}</p>
+
             <button onClick={() => deleteUser(user.id)}>Delete</button>
+            <br />
+            <button onClick={() => editUser(user)}>Efit</button>
           </div>
         ))
       }
