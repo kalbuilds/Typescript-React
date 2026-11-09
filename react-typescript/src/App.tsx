@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChangeEvent } from 'react';
 import './App.css'
 
@@ -305,6 +305,72 @@ function RegistrationForm() {
   )
 }
 
+function Counter() {
+  const [count, setCount] = useState<number>(0);
+  useEffect(() => {
+    document.title = `Count ${count}`;
+  }, [count]);
+
+  return (
+    <div>
+      <h1>{count}</h1>
+      <button onClick={() => setCount(count + 1)}> Increase</button>
+    </div>
+  )
+}
+function LearningEffect() {
+  const [count, setCount] = useState<number>(0);
+  const [name, setName] = useState<string>("");
+  useEffect(() => {
+    document.title = `Count: ${count}`;
+    console.log("Count changed:", count);
+  }, [count]);
+
+  return (
+    <>
+      <h2>{count}</h2>
+      <button onClick={() => setCount(count + 1)}> Increase</button>
+      <br />
+      <input type="text" value={name} onChange={(event) => setName(event.target.value)} placeholder='Enter your name' />
+    </>
+  )
+}
+
+function Users() {
+  const [users, setUsers] = useState<User[]>([]);
+  interface User {
+    id: number;
+    name: string;
+    email: string;
+  }
+  useEffect(() => {
+    async function fetchUsers() {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users"
+      )
+
+      const data: User[] = await response.json();
+      setUsers(data)
+    }
+
+    fetchUsers();
+
+  }, []);
+
+  return (
+    <>
+      <h2> Users</h2>
+      {users.map(user => (
+        <p key={user.id}>{user.name}</p>
+      ))}
+    </>
+  )
+
+
+}
+
+
+
 
 function App() {
   const [user, setUser] = useState<User>({
@@ -349,6 +415,10 @@ function App() {
       <RegistrationForm />
       <h1>RegistrationFormManger</h1>
       <RegistrationFormManger />
+      <Counter />
+      <LearningEffect />
+      <Users />
+
     </div>
   );
 }
