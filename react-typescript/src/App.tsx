@@ -336,21 +336,33 @@ function LearningEffect() {
   )
 }
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
 function Users() {
   const [users, setUsers] = useState<User[]>([]);
-  interface User {
-    id: number;
-    name: string;
-    email: string;
-  }
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     async function fetchUsers() {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/users"
-      )
+      try {
+        const response = await fetch(
+          "https://jsonplaceholder.typicode.com/users"
+        )
+        if (!response.ok) {
+          throw new Error("Falied to fetch users")
+        }
+        const data: User[] = await response.json();
+        setUsers(data);
 
-      const data: User[] = await response.json();
-      setUsers(data)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setLoading(false)
+      }
+
     }
 
     fetchUsers();
@@ -361,7 +373,12 @@ function Users() {
     <>
       <h2> Users</h2>
       {users.map(user => (
-        <p key={user.id}>{user.name}</p>
+        <div key={user.id}>
+          <p>{user.name}</p>
+          <p>{user.email}</p>
+
+        </div>
+
       ))}
     </>
   )
@@ -373,12 +390,14 @@ function Users() {
 
 
 function App() {
-  const [user, setUser] = useState<User>({
-    name: "kal",
-    age: 20,
-    email: "kaleabsintayehu@gmail.com"
+  // const [user, setUser] = useState<User>({
+  //   name: "kal",
+  //   age: 20,
+  //   email: "kaleabsintayehu@gmail.com"
 
-  })
+  // })
+
+
   //   setUser({
   //     name: "John",
   //     age: 25,
